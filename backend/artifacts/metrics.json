@@ -1,0 +1,62 @@
+{
+  "r2": 0.9775,
+  "mae": 13.2,
+  "rmse": 21.61,
+  "train_rows": 12600,
+  "test_rows": 3360,
+  "model": "HistGradientBoostingRegressor",
+  "split": "chronological, last 28 days held out",
+  "feature_importance": [
+    {
+      "feature": "Lag 168h demand",
+      "importance": 0.9591
+    },
+    {
+      "feature": "Lag 1h demand",
+      "importance": 0.0142
+    },
+    {
+      "feature": "Lag 24h demand",
+      "importance": 0.011
+    },
+    {
+      "feature": "Rush window",
+      "importance": 0.0037
+    },
+    {
+      "feature": "Route identity",
+      "importance": 0.0036
+    },
+    {
+      "feature": "Terminal surge",
+      "importance": 0.0027
+    },
+    {
+      "feature": "3h rolling mean",
+      "importance": 0.0022
+    },
+    {
+      "feature": "Hour of day (sin/cos)",
+      "importance": 0.002
+    },
+    {
+      "feature": "Day of week (sin/cos)",
+      "importance": 0.001
+    },
+    {
+      "feature": "Weather (PAGASA mm/hr)",
+      "importance": 0.0004
+    },
+    {
+      "feature": "Weekend flag",
+      "importance": 0.0
+    }
+  ],
+  "cleaning": {
+    "raw_rows": 16860,
+    "after_dedupe": 16800,
+    "missing_values": 168,
+    "outliers_clipped": 42,
+    "clean_rows": 16800
+  }
+}
