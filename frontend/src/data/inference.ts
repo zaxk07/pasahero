@@ -46,7 +46,7 @@ export const unitsFor = (route: string, headway: number) => Math.min(routeByCode
 
 export type Level = 'Free-Flow' | 'Moderate' | 'Heavy Bottleneck'
 export const levelOf = (idx: number): Level => (idx < 45 ? 'Free-Flow' : idx < 70 ? 'Moderate' : 'Heavy Bottleneck')
-export const LEVEL_COLOR: Record<Level, string> = { 'Free-Flow': '#2b8a3e', Moderate: '#e8920b', 'Heavy Bottleneck': '#d9363e' }
+export const LEVEL_COLOR: Record<Level, string> = { 'Free-Flow': '#40c057', Moderate: '#f59f00', 'Heavy Bottleneck': '#fa5252' }
 
 export const hourLabel = (h: number) => `${String(h).padStart(2, '0')}:00`
 

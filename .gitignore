@@ -2,3 +2,7 @@
 .venv/
 frontend/dist/
 __pycache__/
+.playwright-mcp/
+.env
+.env.*
+!.env.example

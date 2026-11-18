@@ -63,18 +63,18 @@ export default function CongestionMap({ hour, rowsByRoute, active }: Props) {
     const pending: { code: string; factor: number; path: L.LatLngTuple[]; casing: L.Polyline }[] = []
     for (const { route, segs } of SEGS) {
       for (const s of segs) {
-        const casing = L.polyline(s.path, { color: '#fff', weight: 0, opacity: 0, lineCap: 'round', lineJoin: 'round', interactive: false }).addTo(m)
+        const casing = L.polyline(s.path, { color: '#0b0d11', weight: 0, opacity: 0, lineCap: 'round', lineJoin: 'round', interactive: false }).addTo(m)
         pending.push({ code: route.code, factor: s.factor, path: s.path, casing })
       }
     }
     for (const p of pending) {
-      const line = L.polyline(p.path, { color: '#2b8a3e', weight: 5, lineCap: 'round', lineJoin: 'round' }).bindTooltip('', { sticky: true }).addTo(m)
+      const line = L.polyline(p.path, { color: '#40c057', weight: 5, lineCap: 'round', lineJoin: 'round' }).bindTooltip('', { sticky: true }).addTo(m)
       list.push({ code: p.code, factor: p.factor, line, casing: p.casing })
     }
     ribbons.current = list
 
     for (const s of STOPS) {
-      L.circleMarker(s.pos, { radius: 7, color: '#161a22', weight: 3, fillColor: '#f6f2e9', fillOpacity: 1 })
+      L.circleMarker(s.pos, { radius: 7, color: '#ece8df', weight: 3, fillColor: '#0b0d11', fillOpacity: 1 })
         .bindPopup(`<strong>${s.name}</strong><br/>${s.note}<br/><small>Routes: ${s.routes.join(', ')}</small>`)
         .addTo(group)
     }

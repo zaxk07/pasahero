@@ -42,7 +42,7 @@ export default function Model() {
           <h2 className="mb-4 text-2xl font-semibold">Held-out evaluation <span className="num text-sm font-normal text-ink-2">· {m.test_rows} test rows · {live ? 'from live API' : 'bundled'}</span></h2>
           <dl className="grid gap-4 sm:grid-cols-3">
             {stats.map(([k, v, d]) => (
-              <div key={k} className="rounded-xl border border-ink bg-paper p-5 shadow-[4px_4px_0_0_var(--color-ink)]">
+              <div key={k} className="rounded-xl border border-ink bg-paper p-5 shadow-[4px_4px_0_0_var(--color-rule)]">
                 <dt className="num text-sm text-ink-2">{k}</dt>
                 <dd className="num mt-1 text-5xl font-medium">{v}</dd>
                 <p className="mt-1 text-sm text-ink-2">{d}</p>

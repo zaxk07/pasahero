@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f6f2e9;
-  --color-paper-2: #ede7d8;
-  --color-ink: #161a22;
-  --color-ink-2: #4a5160;
-  --color-rule: #d8d0bb;
+  --color-paper: #0b0d11;
+  --color-paper-2: #14171d;
+  --color-ink: #ece8df;
+  --color-ink-2: #9aa1ad;
+  --color-rule: #262a33;
   --color-signal: #f2b705;
-  --color-free: #2b8a3e;
-  --color-mod: #e8920b;
-  --color-heavy: #d9363e;
+  --color-free: #40c057;
+  --color-mod: #f59f00;
+  --color-heavy: #fa5252;
   --font-display: "Fraunces", Georgia, serif;
   --font-sans: "Instrument Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; color-scheme: dark; }
 body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance; }
 .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
@@ -29,5 +29,21 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; text-wra
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
 
-.leaflet-container { font-family: var(--font-sans); background: #e6e1d3; }
+.leaflet-container { font-family: var(--font-sans); background: #0f1218; }
+.leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip, .leaflet-tooltip { background: var(--color-paper-2); color: var(--color-ink); border-color: var(--color-rule); }
+.leaflet-tooltip-top::before { border-top-color: var(--color-paper-2); }
+.leaflet-tooltip-bottom::before { border-bottom-color: var(--color-paper-2); }
+.leaflet-control-attribution { background: rgb(11 13 17 / 0.75) !important; color: var(--color-ink-2); }
+.leaflet-control-attribution a { color: var(--color-ink); }
+.leaflet-bar a { background: var(--color-paper-2); color: var(--color-ink); border-color: var(--color-rule); }
+.leaflet-bar a:hover { background: var(--color-rule); }
+::selection { background: var(--color-signal); color: #0b0d11; }
 input[type="range"] { accent-color: var(--color-ink); }
+
+/* journal spread: faint ruled paper + spine shading */
+.journal-page { background-image: repeating-linear-gradient(to bottom, transparent 0 31px, rgb(236 232 223 / 0.035) 31px 32px); }
+@media (min-width: 768px) {
+  .journal::after { content: ""; position: absolute; inset: 0 auto 0 50%; width: 64px; transform: translateX(-50%); pointer-events: none;
+    background: linear-gradient(to right, transparent, rgb(0 0 0 / 0.35) 45%, rgb(255 255 255 / 0.03) 50%, rgb(0 0 0 / 0.35) 55%, transparent); }
+}

@@ -1,7 +1,11 @@
-import { ArrowRight, BarChart3, CalendarClock, Cpu, Map as MapIcon } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import { useState } from 'react'
-import { LevelPill, Field, RouteBadge, Segmented, SelectBox } from '../components/ui'
-import { DAYS, WEATHER, hourLabel, peakOf, unitsFor, type Day, type Weather } from '../data/inference'
+import GlyphBackground from '../components/GlyphBackground'
+import JournalCarousel from '../components/JournalCarousel'
+import StackingCards from '../components/StackingCards'
+import { LevelPill, Field, RouteBadge, SectionHead, Segmented, SelectBox } from '../components/ui'
+import { BUNDLED_METRICS, DAYS, WEATHER, hourLabel, peakOf, unitsFor, type Day, type Weather } from '../data/inference'
 import { ROUTES, routeByCode } from '../data/routes'
 import { useForecast } from '../lib/api'
 
@@ -14,7 +18,7 @@ function QuickForecast() {
   const route = routeByCode(code)
   const max = Math.max(...rows.map((r) => r.hi))
   return (
-    <div className="grid gap-0 overflow-hidden rounded-2xl border border-ink bg-paper shadow-[6px_6px_0_0_var(--color-ink)] md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+    <div className="grid gap-0 overflow-hidden rounded-2xl border border-rule bg-paper-2/70 shadow-[6px_6px_0_0_var(--color-rule)] md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
       <div className="flex flex-col gap-5 border-b border-rule p-6 md:border-b-0 md:border-r">
         <h2 className="text-2xl font-semibold">Quick forecast</h2>
         <Field label="Route">
@@ -50,7 +54,7 @@ function QuickForecast() {
         </dl>
         <div aria-hidden className="flex h-16 items-end gap-[3px]">
           {rows.map((r) => (
-            <div key={r.hour} className="flex-1 rounded-t-sm transition-[height] duration-500" style={{ height: `${Math.max(3, (r.demand / max) * 100)}%`, background: r.hour === peak.hour ? route.color : '#d8d0bb' }} />
+            <div key={r.hour} className="flex-1 rounded-t-sm transition-[height] duration-500" style={{ height: `${Math.max(3, (r.demand / max) * 100)}%`, background: r.hour === peak.hour ? route.color : '#323844' }} />
           ))}
         </div>
       </div>
@@ -58,55 +62,80 @@ function QuickForecast() {
   )
 }
 
-const FEATURES = [
-  { href: '#/map', icon: MapIcon, title: 'Corridor map', body: 'Segment-by-segment congestion for all five routes, scrubbed by hour and weather.' },
-  { href: '#/forecast', icon: BarChart3, title: 'Demand forecast', body: 'Hourly passenger volume with confidence bands and automatic bottleneck alerts.' },
-  { href: '#/dispatch', icon: CalendarClock, title: 'Dispatch planner', body: 'Headways and active units per time block, exportable as CSV for dispatchers.' },
-  { href: '#/model', icon: Cpu, title: 'Model transparency', body: 'Cleaning steps, feature importance and held-out R², MAE and RMSE, in the open.' },
+const i = (n: number) => ({ '--i': n }) as CSSProperties
+
+const STATS = [
+  [String(ROUTES.length), 'official corridors'],
+  [String(ROUTES.reduce((s, r) => s + r.fleet, 0)), 'franchised units'],
+  ['24 h', 'hourly forecast'],
+  [`R² ${BUNDLED_METRICS.r2.toFixed(2)}`, 'held-out fit'],
 ]
 
 export default function Home() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-rule">
-        <svg aria-hidden className="pointer-events-none absolute -right-24 top-0 hidden h-full w-[560px] opacity-90 lg:block" viewBox="0 0 560 520" fill="none">
-          {[['#E8590C', 'M40 40 C200 60 220 200 330 230 S520 300 540 470'], ['#1C7ED6', 'M0 190 C160 180 260 250 330 230'], ['#2F9E44', 'M120 500 C200 380 280 300 330 230'], ['#AE3EC9', 'M330 230 C380 330 420 400 470 520']].map(([c, d]) => (
-            <path key={c} d={d} stroke={c} strokeWidth="9" strokeLinecap="round" />
-          ))}
-          <circle cx="330" cy="230" r="17" fill="#f6f2e9" stroke="#161a22" strokeWidth="6" />
-        </svg>
-        <div className="relative mx-auto max-w-6xl px-4 pb-16 pt-14 sm:px-6 sm:pb-24 sm:pt-24">
-          <p className="rise num text-xs uppercase tracking-[0.18em] text-ink-2" style={{ '--i': 0 } as React.CSSProperties}>Batangas City · Jeepney corridors · Predictive analytics</p>
-          <h1 className="rise mt-4 max-w-3xl text-5xl font-semibold leading-[1.02] sm:text-7xl" style={{ '--i': 1 } as React.CSSProperties}>
-            Forecast jeepney demand and corridor congestion before rush-hour bottlenecks hit.
+      <section className="relative isolate overflow-hidden border-b border-rule">
+        <GlyphBackground />
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-0 bg-[radial-gradient(ellipse_70%_80%_at_18%_45%,var(--color-paper)_20%,transparent_75%)]" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-paper to-transparent" />
+        <div className="relative mx-auto flex min-h-[calc(100svh-3.6rem)] max-w-6xl flex-col justify-center px-4 pb-14 pt-16 sm:px-6 sm:pt-24">
+          <p className="rise num text-xs uppercase tracking-[0.18em] text-ink-2" style={i(0)}>
+            <span className="text-signal">01</span> — Batangas City · Jeepney corridors · Predictive analytics
+          </p>
+          <h1 className="rise mt-5 max-w-4xl text-5xl font-semibold leading-[1.0] sm:text-7xl lg:text-[5.4rem]" style={i(1)}>
+            Forecast jeepney demand and corridor congestion <em className="font-normal italic text-signal">before</em> rush-hour bottlenecks hit.
           </h1>
-          <p className="rise mt-6 max-w-xl text-lg text-ink-2" style={{ '--i': 2 } as React.CSSProperties}>
+          <p className="rise mt-7 max-w-xl border-l border-rule pl-4 text-lg text-ink-2" style={i(2)}>
             PasaHero turns hourly commuter patterns, weather and terminal surges into dispatch decisions for five official routes.
           </p>
-          <div className="rise mt-8 flex flex-wrap gap-3" style={{ '--i': 3 } as React.CSSProperties}>
-            <a href="#/map" className="press inline-flex items-center gap-2 rounded-lg bg-ink px-5 py-3 font-medium text-paper hover:bg-ink-2">Open the map <ArrowRight className="size-4" /></a>
-            <a href="#/forecast" className="press inline-flex items-center gap-2 rounded-lg border border-ink px-5 py-3 font-medium hover:bg-paper-2">See the forecast</a>
+          <div className="rise mt-9 flex flex-wrap gap-3" style={i(3)}>
+            <a href="#/map" className="press inline-flex items-center gap-2 rounded-lg bg-ink px-5 py-3 font-medium text-paper hover:bg-ink/85">Open the map <ArrowRight className="size-4" /></a>
+            <a href="#/forecast" className="press inline-flex items-center gap-2 rounded-lg border border-rule bg-paper/60 px-5 py-3 font-medium backdrop-blur hover:border-ink">See the forecast</a>
           </div>
+          <dl className="rise mt-16 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-5 border-t border-rule pt-6 sm:grid-cols-4" style={i(4)}>
+            {STATS.map(([v, k]) => (
+              <div key={k}>
+                <dt className="sr-only">{k}</dt>
+                <dd className="num text-2xl">{v}</dd>
+                <dd className="mt-1 text-xs uppercase tracking-wider text-ink-2">{k}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <QuickForecast />
+      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+        <SectionHead n="02" kicker="Quick forecast" title="Pick a route. See the rush before it forms." lead="Model output for any route, day and weather — live from the API when it is up, bundled otherwise." />
+        <div className="mt-10">
+          <QuickForecast />
+        </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURES.map((f, i) => (
-            <li key={f.title} className="rise" style={{ '--i': i } as React.CSSProperties}>
-              <a href={f.href} className="group flex h-full flex-col gap-3 rounded-xl border border-rule bg-paper-2/60 p-5 transition-all hover:-translate-y-1 hover:border-ink hover:bg-paper">
-                <f.icon className="size-6" aria-hidden />
-                <h3 className="text-xl font-semibold">{f.title}</h3>
-                <p className="text-sm text-ink-2">{f.body}</p>
-                <ArrowRight className="mt-auto size-4 transition-transform group-hover:translate-x-1" aria-hidden />
-              </a>
-            </li>
-          ))}
-        </ul>
+      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-28">
+        <SectionHead n="03" kicker="Route journal" title="Five corridors, one field notebook." lead="Flip through each route's sketch, stops and today's peak. Drag, use the arrow keys, or tap a page." />
+        <div className="mt-10">
+          <JournalCarousel />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHead n="04" kicker="What PasaHero does" title={<>From raw counts to <em className="font-normal italic">dispatch-ready</em> decisions.</>} lead="Four views share one forecasting model. Scroll through the deck, then open any of them." />
+        <div className="mt-10 pb-10">
+          <StackingCards />
+        </div>
+      </section>
+
+      <section className="border-t border-rule">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-20 sm:px-6 sm:py-28 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:items-end">
+          <div>
+            <p className="num text-xs uppercase tracking-[0.18em] text-ink-2"><span className="text-signal">05</span> — Next rush hour</p>
+            <h2 className="mt-4 text-4xl font-semibold leading-[1.04] sm:text-6xl">Plan the next rush hour, not the last one.</h2>
+          </div>
+          <div className="flex flex-wrap gap-3 md:justify-end">
+            <a href="#/map" className="press inline-flex items-center gap-2 rounded-lg bg-ink px-5 py-3 font-medium text-paper hover:bg-ink/85">Explore the corridors <ArrowRight className="size-4" /></a>
+            <a href="#/dispatch" className="press inline-flex items-center gap-2 rounded-lg border border-rule px-5 py-3 font-medium hover:border-ink">Open dispatch</a>
+          </div>
+        </div>
       </section>
     </>
   )

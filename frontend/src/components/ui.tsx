@@ -74,9 +74,24 @@ export function LevelPill({ congestion }: { congestion: number }) {
 export function PageHead({ kicker, title, lead }: { kicker: string; title: string; lead: string }) {
   return (
     <header className="rise mx-auto max-w-6xl px-4 pb-6 pt-20 sm:px-6 sm:pt-24">
-      <p className="num text-xs uppercase tracking-[0.18em] text-ink-2">{kicker}</p>
-      <h1 className="mt-2 text-4xl font-semibold sm:text-5xl">{title}</h1>
-      <p className="mt-3 max-w-2xl text-lg text-ink-2">{lead}</p>
+      <p className="num text-xs uppercase tracking-[0.18em] text-ink-2"><span className="text-signal">●</span> {kicker}</p>
+      <h1 className="mt-3 text-4xl font-semibold leading-[1.04] sm:text-6xl">{title}</h1>
+      <p className="mt-4 max-w-2xl border-l border-rule pl-4 text-lg text-ink-2">{lead}</p>
+    </header>
+  )
+}
+
+/** Editorial section header: numbered kicker, display title, rule, lead set in the right column. */
+export function SectionHead({ n, kicker, title, lead }: { n: string; kicker: string; title: ReactNode; lead?: string }) {
+  return (
+    <header className="grid gap-6 border-t border-rule pt-6 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:items-end md:gap-12">
+      <div>
+        <p className="num text-xs uppercase tracking-[0.18em] text-ink-2">
+          <span className="text-signal">{n}</span> — {kicker}
+        </p>
+        <h2 className="mt-4 text-4xl font-semibold leading-[1.04] sm:text-5xl">{title}</h2>
+      </div>
+      {lead && <p className="max-w-md text-lg text-ink-2 md:justify-self-end md:pb-1">{lead}</p>}
     </header>
   )
 }

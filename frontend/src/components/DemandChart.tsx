@@ -32,12 +32,12 @@ export default function DemandChart({ series }: { series: Series[] }) {
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full touch-pan-y" role="img" aria-label="Hourly passenger demand forecast with confidence bands" onPointerMove={onMove} onPointerLeave={() => setHover(null)}>
         {ticks.map((t) => (
           <g key={t}>
-            <line x1={M.l} x2={W - M.r} y1={y(t)} y2={y(t)} stroke="#d8d0bb" strokeDasharray={t ? '3 4' : undefined} />
-            <text x={M.l - 8} y={y(t) + 4} textAnchor="end" className="num" fontSize="11" fill="#4a5160">{t}</text>
+            <line x1={M.l} x2={W - M.r} y1={y(t)} y2={y(t)} stroke="var(--color-rule)" strokeDasharray={t ? '3 4' : undefined} />
+            <text x={M.l - 8} y={y(t) + 4} textAnchor="end" className="num" fontSize="11" fill="var(--color-ink-2)">{t}</text>
           </g>
         ))}
         {[0, 4, 8, 12, 16, 20, 23].map((h) => (
-          <text key={h} x={x(h)} y={H - 10} textAnchor="middle" className="num" fontSize="11" fill="#4a5160">{hourLabel(h)}</text>
+          <text key={h} x={x(h)} y={H - 10} textAnchor="middle" className="num" fontSize="11" fill="var(--color-ink-2)">{hourLabel(h)}</text>
         ))}
         {series.map((s) => (
           <path key={`b${s.code}`} d={band(s.rows)} fill={s.color} opacity="0.13" />
@@ -47,13 +47,13 @@ export default function DemandChart({ series }: { series: Series[] }) {
         ))}
         {hover !== null && (
           <g>
-            <line x1={x(hover)} x2={x(hover)} y1={M.t} y2={H - M.b} stroke="#161a22" strokeWidth="1" />
+            <line x1={x(hover)} x2={x(hover)} y1={M.t} y2={H - M.b} stroke="var(--color-ink)" strokeWidth="1" />
             {series.map((s) => (
-              <circle key={s.code} cx={x(hover)} cy={y(s.rows[hover].demand)} r="4.5" fill={s.color} stroke="#f6f2e9" strokeWidth="2" />
+              <circle key={s.code} cx={x(hover)} cy={y(s.rows[hover].demand)} r="4.5" fill={s.color} stroke="var(--color-paper)" strokeWidth="2" />
             ))}
           </g>
         )}
-        <text x={M.l - 40} y="12" fontSize="10" className="num" fill="#4a5160">pax / hr</text>
+        <text x={M.l - 40} y="12" fontSize="10" className="num" fill="var(--color-ink-2)">pax / hr</text>
       </svg>
       {hover !== null && (
         <div
